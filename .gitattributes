@@ -1,0 +1,5 @@
+* text=auto
+
+# Keep .klc readable in diffs. Git stores it as UTF-8; the working tree gets UTF-16LE
+# with a BOM and CRLF, which is what MSKLC and kbdutool require.
+*.klc working-tree-encoding=UTF-16LE-BOM text eol=crlf
