@@ -45,16 +45,55 @@ Five deliberate changes:
 
 ## Building and installing
 
-The `.klc` is the source of truth. Open it in [Microsoft Keyboard Layout Creator
-1.4](https://www.microsoft.com/en-us/download/details.aspx?id=102134) and use
-**Project → Build DLL and Setup Package**, then run the generated `setup.exe` and accept
-the UAC prompt. MSKLC needs .NET Framework 3.5, which is an optional Windows feature.
+The `.klc` is the source of truth. Two ways to compile it.
 
-The layout can also be compiled with `kbdutool.exe` from the Windows Driver Kit, which
-reads the same `.klc`.
+### Without installing MSKLC (what this layout was built with)
 
-Once installed, add Urdu under **Settings → Time & language → Language & region** and
-switch with **Win+Space**.
+`MSKLC.exe` is a Microsoft-signed 7-Zip self-extracting archive wrapping an MSI, and the
+MSI carries `kbdutool.exe` plus a full MSVC toolchain. Both can be extracted without
+installing anything:
+
+```powershell
+.\MSKLC.exe -o"$PWD\msklc_x" -y
+msiexec /a "$PWD\msklc_x\MSKLC\MSKLC.msi" /qn TARGETDIR="$PWD\msklc_files"
+```
+
+Then compile. `-u` is required because the `.klc` is UTF-16; `-m` targets AMD64 and `-o`
+targets WOW64, and a 64-bit Windows needs both:
+
+```powershell
+$b = "$PWD\msklc_files"
+$env:PATH = "$bin\i386;$bin\i386md64;$env:PATH"
+$env:INCLUDE = "$b\inc"
+$env:LIB = "$b\libmd64"   # use lib\i386 for the -o (WOW64) build
+& "$bin\i386\kbdutool.exe" -u -w -m urduweb_de.klc
+```
+
+Install the results from an elevated prompt: the AMD64 `UrduWeb.dll` goes to
+`C:\Windows\System32`, the WOW64 one to `C:\Windows\SysWOW64`, then create
+`HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts0000420` with string values
+`Layout File` = `UrduWeb.dll`, `Layout Text` = `UrduWeb Urdu Phonetic`, and a `Layout Id`
+not already used by another layout.
+
+Finally register it for your user (no elevation needed):
+
+```powershell
+$l = Get-WinUserLanguageList
+$l.Add('ur-PK')
+$l[-1].InputMethodTips.Clear()
+$l[-1].InputMethodTips.Add('0420:A0000420')
+Set-WinUserLanguageList $l -Force
+```
+
+### With the MSKLC GUI
+
+Install [Microsoft Keyboard Layout Creator
+1.4](https://www.microsoft.com/en-us/download/details.aspx?id=102134), open the `.klc`, and
+use **Project -> Build DLL and Setup Package**, then run the generated `setup.exe`. MSKLC
+needs .NET Framework 3.5, an optional Windows feature
+(`dism /online /enable-feature /featurename:NetFx3 /all`).
+
+Either way, switch to Urdu with **Win+Space**.
 
 ## License
 
