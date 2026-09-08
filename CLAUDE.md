@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Issues live as markdown files under `.scratch/<feature>/` in this repo. See `docs/agents/issue-tracker.md`.
+Issues live in this repo's GitHub Issues, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
@@ -42,3 +42,16 @@ The session id in the filename is what makes concurrent sessions safe — no two
 - `.claude/hooks/session-stop.mjs` — if the repo changed but no history entry carries this session's id, blocks **once** to force one, then never again that session.
 
 Both exclude `.memory/` from the git fingerprint, so the memory system's own writes never count as "the repo changed".
+
+## Asking for clarification
+
+When you need a decision from the user — requirements, design forks, scope, ambiguous
+trade-offs — ask through the **`AskUserQuestion` tool**, not as prose in a message.
+
+This applies to skill-driven interview rounds too (`/grilling`, `/grill-with-docs`):
+format the round's frontier as tool questions, one question per decision, with the
+recommended option first and labelled `(Recommended)`.
+
+The tool caps a round at **4 questions x 4 options**. When the frontier is wider than
+that, ask the four most blocking questions and carry the rest into the next round,
+saying explicitly which ones were deferred and why.
