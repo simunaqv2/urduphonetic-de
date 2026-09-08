@@ -63,15 +63,15 @@ targets WOW64, and a 64-bit Windows needs both:
 
 ```powershell
 $b = "$PWD\msklc_files"
-$env:PATH = "$bin\i386;$bin\i386md64;$env:PATH"
+$env:PATH = "$b\bin\i386;$b\bin\i386\amd64;$env:PATH"
 $env:INCLUDE = "$b\inc"
-$env:LIB = "$b\libmd64"   # use lib\i386 for the -o (WOW64) build
-& "$bin\i386\kbdutool.exe" -u -w -m urduweb_de.klc
+$env:LIB = "$b\lib\amd64"   # use lib\i386 for the -o (WOW64) build
+& "$b\bin\i386\kbdutool.exe" -u -w -m urduweb_de.klc
 ```
 
 Install the results from an elevated prompt: the AMD64 `UrduWeb.dll` goes to
 `C:\Windows\System32`, the WOW64 one to `C:\Windows\SysWOW64`, then create
-`HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts0000420` with string values
+`HKLM\SYSTEM\CurrentControlSet\Control\Keyboard Layouts\a0000420` with string values
 `Layout File` = `UrduWeb.dll`, `Layout Text` = `UrduWeb Urdu Phonetic`, and a `Layout Id`
 not already used by another layout.
 
