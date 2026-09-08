@@ -43,6 +43,23 @@ Five deliberate changes:
 4. **ۓ on Shift+Y** (U+06D3), replacing an obscure Quranic sign.
 5. **Quranic extras trimmed** to ة, ٰ and ﷺ, freeing 42 slots on the AltGr layers.
 
+## Installing
+
+Download the zip from the [latest release](https://github.com/simunaqv2/urduphonetic-de/releases/latest),
+unpack it, and from a PowerShell prompt in that folder:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+It asks for elevation once to write the two DLLs and the registry key, then registers the
+language as your own user. Switch with **Win+Space**. To remove it, run `uninstall.ps1`
+the same way.
+
+The layout has **no runtime dependencies** - it is a native Windows layout, so it works in
+every application including the login screen, UAC prompts and password fields. ARM64
+Windows is not supported, because `kbdutool` cannot produce ARM64 layout DLLs.
+
 ## Building and installing
 
 The `.klc` is the source of truth. Two ways to compile it.
