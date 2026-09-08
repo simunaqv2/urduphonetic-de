@@ -46,7 +46,7 @@ Five deliberate changes:
 ## Building and installing
 
 The `.klc` is the source of truth. Open it in [Microsoft Keyboard Layout Creator
-1.4](https://www.microsoft.com/en-us/download/details.aspx?id=22339) and use
+1.4](https://www.microsoft.com/en-us/download/details.aspx?id=102134) and use
 **Project → Build DLL and Setup Package**, then run the generated `setup.exe` and accept
 the UAC prompt. MSKLC needs .NET Framework 3.5, which is an optional Windows feature.
 
